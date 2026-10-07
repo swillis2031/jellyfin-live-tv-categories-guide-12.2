@@ -84,7 +84,9 @@ const CategoryTile: FC<CategoryTileProps> = ({ category, onSelect }) => {
                     lg: 'calc(25% - 16px)'
                 },
                 minWidth: 0,
-                overflow: 'visible'
+                overflow: 'visible',
+                background: 'transparent',
+                boxShadow: 'none'
             }}
         >
             <ButtonBase
@@ -94,26 +96,35 @@ const CategoryTile: FC<CategoryTileProps> = ({ category, onSelect }) => {
                 sx={{
                     alignItems: 'center',
                     background: category.id === ALL_CHANNELS_ID
-                        ? 'linear-gradient(135deg, rgba(0, 164, 220, 0.30), rgba(112, 68, 184, 0.23))'
-                        : 'linear-gradient(145deg, rgba(128, 128, 128, 0.17), rgba(128, 128, 128, 0.07))',
+                        ? 'linear-gradient(135deg, rgba(0, 164, 220, 0.30) 0%, rgba(86, 70, 190, 0.20) 54%, rgba(20, 24, 32, 0.30) 100%)'
+                        : 'linear-gradient(135deg, rgba(255, 255, 255, 0.115) 0%, rgba(84, 111, 144, 0.10) 48%, rgba(20, 24, 32, 0.24) 100%)',
+                    backdropFilter: 'blur(16px) saturate(1.22)',
+                    WebkitBackdropFilter: 'blur(16px) saturate(1.22)',
                     border: '1px solid',
                     borderColor: category.id === ALL_CHANNELS_ID
-                        ? 'rgba(0, 164, 220, 0.52)'
-                        : 'rgba(128, 128, 128, 0.28)',
-                    borderRadius: 1,
+                        ? 'rgba(68, 190, 235, 0.48)'
+                        : 'rgba(255, 255, 255, 0.14)',
+                    borderRadius: 2,
+                    boxShadow: category.id === ALL_CHANNELS_ID
+                        ? '0 10px 30px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255,255,255,0.11)'
+                        : '0 8px 24px rgba(0, 0, 0, 0.20), inset 0 1px 0 rgba(255,255,255,0.08)',
                     color: 'inherit',
                     display: 'flex',
                     justifyContent: 'flex-start',
                     minHeight: { xs: '5.5rem', sm: '6.4rem' },
                     padding: 2,
                     textAlign: 'left',
-                    transition: 'transform 160ms ease, box-shadow 160ms ease',
+                    transition: 'transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease',
                     width: '100%',
                     '& > * + *': { marginLeft: 1.5 },
                     '[dir="rtl"] & > * + *': { marginLeft: 0, marginRight: 1.5 },
-                    '&:hover': { boxShadow: 6, transform: 'translateY(-0.15rem) scale(1.01)' },
+                    '&:hover': {
+                        borderColor: 'rgba(80, 194, 235, 0.46)',
+                        boxShadow: '0 14px 34px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.15)',
+                        transform: 'translateY(-0.15rem) scale(1.008)'
+                    },
                     '&:focus, &:focus-visible': {
-                        boxShadow: 6,
+                        boxShadow: '0 14px 34px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.15)',
                         outline: '0.2rem solid',
                         outlineColor: 'primary.main',
                         outlineOffset: '0.12rem',
@@ -129,8 +140,10 @@ const CategoryTile: FC<CategoryTileProps> = ({ category, onSelect }) => {
                     sx={{
                         alignItems: 'center',
                         alignSelf: 'stretch',
-                        backgroundColor: 'primary.main',
-                        borderRadius: 1,
+                        background: 'linear-gradient(145deg, rgba(0, 176, 232, 0.92), rgba(58, 94, 180, 0.82))',
+                        border: '1px solid rgba(255,255,255,0.18)',
+                        borderRadius: 1.5,
+                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 6px 16px rgba(0,0,0,0.18)',
                         color: 'primary.contrastText',
                         display: 'flex',
                         flex: '0 0 3.2rem',
@@ -265,9 +278,12 @@ const GuideView: FC = () => {
                     className='padded-left padded-right'
                     sx={{
                         alignItems: { xs: 'flex-start', sm: 'center' },
-                        background: 'linear-gradient(125deg, rgba(0, 164, 220, 0.24), rgba(112, 68, 184, 0.16))',
-                        border: '1px solid rgba(128, 128, 128, 0.26)',
-                        borderRadius: 2,
+                        background: 'linear-gradient(125deg, rgba(0, 164, 220, 0.20) 0%, rgba(94, 73, 183, 0.14) 50%, rgba(20, 24, 32, 0.24) 100%)',
+                        backdropFilter: 'blur(18px) saturate(1.20)',
+                        WebkitBackdropFilter: 'blur(18px) saturate(1.20)',
+                        border: '1px solid rgba(255,255,255,0.12)',
+                        borderRadius: 3,
+                        boxShadow: '0 10px 34px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.09)',
                         display: 'flex',
                         flexDirection: { xs: 'column', sm: 'row' },
                         justifyContent: 'space-between',
