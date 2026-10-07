@@ -1,0 +1,256 @@
+/*
+ * Modern Guide styling for the temporary Live TV Categories build.
+ * Scoped to .modernCategoryGuide so the rest of Jellyfin is untouched.
+ */
+
+.tvguide.modernCategoryGuide {
+    --modern-guide-radius: 0.72em;
+    --modern-guide-surface: color-mix(
+        in srgb,
+        var(--jf-palette-background-paper, #20282c) 92%,
+        var(--jf-palette-primary-main, #00a4dc) 8%
+    );
+    --modern-guide-surface-hover: color-mix(
+        in srgb,
+        var(--jf-palette-background-paper, #20282c) 84%,
+        var(--jf-palette-primary-main, #00a4dc) 16%
+    );
+    --modern-guide-border: color-mix(
+        in srgb,
+        var(--jf-palette-text-primary, #fff) 12%,
+        transparent
+    );
+    --modern-guide-shadow: 0 0.18em 0.55em rgba(0, 0, 0, 0.2);
+    --modern-guide-shadow-hover: 0 0.42em 1.15em rgba(0, 0, 0, 0.34);
+}
+
+/* Give rows a little more air, while keeping channel/program rows aligned. */
+.layout-desktop .tvguide.modernCategoryGuide .channelPrograms,
+.layout-desktop .tvguide.modernCategoryGuide .guide-channelHeaderCell {
+    height: 5.15em;
+}
+
+.tvguide.modernCategoryGuide .channelPrograms {
+    border: 0;
+    background: transparent;
+    margin-top: 0.16em;
+    margin-bottom: 0.16em;
+    contain: layout style;
+    overflow: visible;
+}
+
+.tvguide.modernCategoryGuide .guide-channelHeaderCell {
+    border: 1px solid var(--modern-guide-border);
+    border-radius: var(--modern-guide-radius);
+    background: var(--modern-guide-surface);
+    box-shadow: var(--modern-guide-shadow);
+    margin: 0.16em 0.32em 0.16em 0;
+    contain: layout style;
+    overflow: visible;
+    transition:
+        background-color 150ms ease,
+        box-shadow 150ms ease,
+        transform 150ms ease;
+}
+
+.tvguide.modernCategoryGuide .guide-channelHeaderCell:hover,
+.tvguide.modernCategoryGuide .guide-channelHeaderCell:focus-visible {
+    background: var(--modern-guide-surface-hover);
+    box-shadow: var(--modern-guide-shadow-hover);
+    transform: translateY(-1px);
+    z-index: 5;
+}
+
+/* Keep the number, but make the logo the visual focus like the HA card. */
+.tvguide.modernCategoryGuide .guideChannelNumber {
+    max-width: 27%;
+    padding-left: 0.72em;
+    font-size: 0.92em;
+    font-weight: 650;
+    opacity: 0.78;
+}
+
+.tvguide.modernCategoryGuide .guideChannelImage {
+    right: 4%;
+    top: 9%;
+    bottom: 9%;
+    width: 66%;
+    background-position: right center;
+    filter: drop-shadow(0 0.1em 0.18em rgba(0, 0, 0, 0.22));
+}
+
+.tvguide.modernCategoryGuide .guideChannelName {
+    font-weight: 650;
+}
+
+/* Modern programme "cards". */
+.tvguide.modernCategoryGuide .programCell {
+    top: 0.22em;
+    bottom: 0.22em;
+    border: 1px solid var(--modern-guide-border);
+    border-radius: var(--modern-guide-radius);
+    background: var(--modern-guide-surface);
+    box-shadow: var(--modern-guide-shadow);
+    padding: 0 !important;
+    contain: layout style;
+    overflow: hidden;
+    transform-origin: center;
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        box-shadow 150ms ease,
+        transform 140ms ease,
+        filter 150ms ease;
+}
+
+/* The native current-program class becomes a clear but restrained highlight. */
+.tvguide.modernCategoryGuide .programCell-active {
+    background: color-mix(
+        in srgb,
+        var(--jf-palette-background-paper, #20282c) 76%,
+        var(--jf-palette-primary-main, #00a4dc) 24%
+    ) !important;
+    border-color: color-mix(
+        in srgb,
+        var(--jf-palette-primary-main, #00a4dc) 58%,
+        transparent
+    ) !important;
+    box-shadow:
+        inset 0.22em 0 0 var(--jf-palette-primary-main, #00a4dc),
+        0 0.3em 0.9em rgba(0, 0, 0, 0.28);
+}
+
+.layout-desktop .tvguide.modernCategoryGuide .programCell:hover {
+    background: var(--modern-guide-surface-hover);
+    border-color: color-mix(
+        in srgb,
+        var(--jf-palette-primary-main, #00a4dc) 45%,
+        var(--modern-guide-border)
+    );
+    box-shadow: var(--modern-guide-shadow-hover);
+    transform: translateY(-2px) scale(1.008);
+    z-index: 40;
+}
+
+.tvguide.modernCategoryGuide .programCell:focus-visible {
+    box-shadow:
+        0 0 0 0.16em var(--jf-palette-primary-main, #00a4dc),
+        var(--modern-guide-shadow-hover);
+    transform: translateY(-2px) scale(1.008);
+    z-index: 41;
+}
+
+.tvguide.modernCategoryGuide .guideProgramName {
+    padding: 0.62em 0.78em;
+}
+
+.tvguide.modernCategoryGuide .guideProgramNameText {
+    font-weight: 520;
+    line-height: 1.22;
+}
+
+.tvguide.modernCategoryGuide .guideProgramSecondaryInfo {
+    margin-top: 0.22em;
+    opacity: 0.76;
+    font-size: 0.9em;
+}
+
+/* Round/soften the date controls and timeline to match the cards. */
+.tvguide.modernCategoryGuide .guide-date-tab-button {
+    border-radius: 999px !important;
+    padding: 0.4em 0.8em !important;
+    transition:
+        background-color 150ms ease,
+        color 150ms ease,
+        transform 140ms ease;
+}
+
+.tvguide.modernCategoryGuide .guide-date-tab-button:hover {
+    background: color-mix(
+        in srgb,
+        var(--jf-palette-primary-main, #00a4dc) 12%,
+        transparent
+    );
+    transform: translateY(-1px);
+}
+
+.tvguide.modernCategoryGuide .guide-date-tab-button.emby-tab-button-active {
+    background: color-mix(
+        in srgb,
+        var(--jf-palette-primary-main, #00a4dc) 20%,
+        transparent
+    );
+}
+
+.tvguide.modernCategoryGuide .guide-headerTimeslots {
+    border-radius: var(--modern-guide-radius);
+}
+
+.tvguide.modernCategoryGuide .timeslotHeader {
+    font-weight: 650;
+    opacity: 0.86;
+}
+
+/* Fixed tooltip: modelled on the user's HA EPG card, but theme-aware. */
+.modernGuideTooltip {
+    position: fixed;
+    z-index: 6000;
+    width: min(25rem, calc(100vw - 1.5rem));
+    max-width: 25rem;
+    box-sizing: border-box;
+    padding: 0.78rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.72rem;
+    background: rgba(22, 25, 28, 0.97);
+    color: #f5f7f8;
+    box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.42);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+        opacity 100ms ease,
+        transform 100ms ease;
+    backdrop-filter: blur(12px);
+}
+
+.modernGuideTooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.modernGuideTooltip-title {
+    font-weight: 750;
+    font-size: 0.96rem;
+    line-height: 1.25;
+}
+
+.modernGuideTooltip-overview {
+    margin-top: 0.35rem;
+    font-size: 0.84rem;
+    line-height: 1.35;
+    color: rgba(245, 247, 248, 0.86);
+    white-space: normal;
+}
+
+.modernGuideTooltip-time {
+    margin-top: 0.48rem;
+    font-size: 0.78rem;
+    font-weight: 650;
+    color: rgba(245, 247, 248, 0.66);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tvguide.modernCategoryGuide .programCell,
+    .tvguide.modernCategoryGuide .guide-channelHeaderCell,
+    .tvguide.modernCategoryGuide .guide-date-tab-button,
+    .modernGuideTooltip {
+        transition: none !important;
+    }
+
+    .layout-desktop .tvguide.modernCategoryGuide .programCell:hover,
+    .tvguide.modernCategoryGuide .programCell:focus-visible,
+    .tvguide.modernCategoryGuide .guide-channelHeaderCell:hover,
+    .tvguide.modernCategoryGuide .guide-channelHeaderCell:focus-visible {
+        transform: none;
+    }
+}

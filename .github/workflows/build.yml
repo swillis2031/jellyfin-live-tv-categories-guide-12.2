@@ -1,4 +1,4 @@
-name: Build Live TV Categories 12.2 + Filtered Guide
+name: Build Live TV Categories 12.2 + Modern Filtered Guide
 
 on:
   workflow_dispatch:
@@ -7,10 +7,10 @@ permissions:
   contents: write
 
 env:
-  PLUGIN_VERSION: 0.4.1.0
+  PLUGIN_VERSION: 0.4.2.0
   JELLYFIN_ABI: 12.2.0.0
-  RELEASE_TAG: v0.4.1.0-jf12.2-filtered-guide
-  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.4.1.0.zip
+  RELEASE_TAG: v0.4.2.0-jf12.2-modern-guide
+  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.4.2.0.zip
 
 jobs:
   build:
@@ -82,6 +82,7 @@ jobs:
           set -euo pipefail
           cp -a overlay/. jellyfin-web/
           python3 scripts/patch_guide.py jellyfin-web
+          python3 scripts/patch_guide_modern.py jellyfin-web
 
       - name: Build Jellyfin Web 12.2
         working-directory: jellyfin-web
@@ -106,7 +107,7 @@ jobs:
           import zipfile
 
           stage = Path('artifacts/stage')
-          package = Path('artifacts') / 'Jellyfin.Plugin.LiveTvCategories_0.4.1.0.zip'
+          package = Path('artifacts') / 'Jellyfin.Plugin.LiveTvCategories_0.4.2.0.zip'
           if stage.exists():
               shutil.rmtree(stage)
           (stage / 'web').mkdir(parents=True)
@@ -133,7 +134,7 @@ jobs:
               '- bundled-Web exact-version guard changed to 12.2\n'
               '- upstream category-first Programmes view retained\n'
               '- category-first Guide picker added\n'
-              '- selected category channels feed Jellyfin native Guide\n',
+              '- selected category channels feed Jellyfin native Guide\n- modern rounded EPG styling, clearer logos and hover/focus motion\n- programme title/description/time tooltip on hover or keyboard focus\n',
               encoding='utf-8'
           )
 
@@ -165,13 +166,13 @@ jobs:
           manifest = [{
               'guid': 'a4b2fdc8-cb2a-463b-812a-16e9ea88e12a',
               'name': 'Live TV Categories',
-              'overview': 'Category-first Live TV browsing plus a category-filtered EPG Guide',
-              'description': 'Unofficial temporary Jellyfin 12.2 build with a category-first Guide that filters Jellyfin native EPG rows by M3U group-title.',
+              'overview': 'Category-first Live TV browsing plus a modern category-filtered EPG Guide',
+              'description': 'Unofficial Jellyfin 12.2 build with a category-first Guide, modern rounded EPG styling, larger channel logos and programme hover tooltips.',
               'owner': 'jeno / temporary filtered-guide build',
               'category': 'Live TV',
               'versions': [{
                   'version': os.environ['PLUGIN_VERSION'],
-                  'changelog': 'Temporary 12.2 build adding a category-first Guide/EPG view while preserving Jellyfin native Guide playback and DVR behavior.',
+                  'changelog': 'Adds modern rounded EPG styling, clearer channel logos, hover/focus animation and programme description/time tooltips to the category-filtered native Jellyfin Guide.',
                   'targetAbi': os.environ['JELLYFIN_ABI'],
                   'sourceUrl': source_url,
                   'checksum': checksum,
@@ -189,14 +190,14 @@ jobs:
         with:
           name: Live-TV-Categories-12.2-Filtered-Guide
           path: |
-            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.1.0.zip
+            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.2.0.zip
             artifacts/manifest.json
 
       - name: Publish/update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
-          name: Live TV Categories 0.4.1.0 - JF 12.2 Filtered Guide
+          name: Live TV Categories 0.4.2.0 - JF 12.2 Modern Filtered Guide
           body: |
             UNOFFICIAL temporary compatibility/custom build.
 
@@ -207,7 +208,11 @@ jobs:
             - category-first landing screen on Live TV -> Guide
             - filtered native EPG grid for the selected M3U group-title
             - back-to-categories button in the native Guide header
+            - rounded modern programme cards and channel rows
+            - larger/clearer channel logos
+            - subtle hover/focus lift animation
+            - programme description + time tooltip on hover/focus
           make_latest: true
           files: |
-            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.1.0.zip
+            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.2.0.zip
             artifacts/manifest.json

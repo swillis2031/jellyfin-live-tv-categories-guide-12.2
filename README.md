@@ -1,3 +1,53 @@
+# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.2.0)
+
+This is the next build of the category-filtered Guide work.
+
+It retains the existing category picker and filtered native Jellyfin EPG, then adds a visual layer inspired by the supplied Home Assistant `epg-card.js`:
+
+- larger and clearer channel logos
+- rounded channel and programme surfaces
+- softer borders and shadows
+- slightly taller/less cramped rows
+- subtle hover/focus lift animation
+- stronger current-program highlight
+- rounded date controls
+- a fixed programme tooltip showing title, XMLTV/Jellyfin description and time
+
+The Guide remains Jellyfin's native Guide. Playback, programme dialogs, DVR controls,
+date handling and EPG loading remain Jellyfin functionality.
+
+## Upgrade path
+
+Build this repository with GitHub Actions exactly like the previous 0.4.1.0 builder.
+The generated package is version **0.4.2.0**, so Jellyfin should offer it as an upgrade.
+
+Repository URL after a successful build:
+
+`https://github.com/YOUR-USERNAME/YOUR-REPOSITORY/releases/latest/download/manifest.json`
+
+After installing:
+
+1. Restart Jellyfin.
+2. Hard refresh the browser (`Ctrl+Shift+R`).
+3. If the old JavaScript/CSS is still cached, clear site data for the Jellyfin host and log in again.
+
+## Rollback
+
+If you dislike the redesign, uninstall 0.4.2.0 and reinstall your working 0.4.1.0
+build from the previous repository, then restart Jellyfin and hard refresh.
+
+## Styling location
+
+The visual rules are isolated in:
+
+`overlay/src/components/guide/category-modern.scss`
+
+So visual tweaks can be made without rewriting the category filtering logic.
+
+The tooltip/metadata wiring is isolated in:
+
+`scripts/patch_guide_modern.py`
+
 # Live TV Categories — Jellyfin 12.2 + Category-filtered Guide
 
 This is a small builder/overlay repository for an **unofficial temporary** Jellyfin 12.2 build of JeKaQM's Live TV Categories plugin.
