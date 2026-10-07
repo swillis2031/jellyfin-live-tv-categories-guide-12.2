@@ -1,4 +1,13 @@
-# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.2.0)
+# 0.4.2.1 quick fix
+
+This build fixes two issues found in the first 0.4.2.0 modern-guide test:
+
+1. Channel/logo rows drifting out of alignment with programme rows.
+2. Channel logos looking muted/washed out against the new dark card background.
+
+The functional category filtering and tooltip code is otherwise unchanged.
+
+# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.2.1)
 
 This is the next build of the category-filtered Guide work.
 
@@ -19,7 +28,7 @@ date handling and EPG loading remain Jellyfin functionality.
 ## Upgrade path
 
 Build this repository with GitHub Actions exactly like the previous 0.4.1.0 builder.
-The generated package is version **0.4.2.0**, so Jellyfin should offer it as an upgrade.
+The generated package is version **0.4.2.1**, so Jellyfin should offer it as an upgrade.
 
 Repository URL after a successful build:
 
@@ -33,7 +42,7 @@ After installing:
 
 ## Rollback
 
-If you dislike the redesign, uninstall 0.4.2.0 and reinstall your working 0.4.1.0
+If you dislike the redesign, uninstall 0.4.2.1 and reinstall your working 0.4.1.0
 build from the previous repository, then restart Jellyfin and hard refresh.
 
 ## Styling location

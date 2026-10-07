@@ -24,17 +24,20 @@
     --modern-guide-shadow-hover: 0 0.42em 1.15em rgba(0, 0, 0, 0.34);
 }
 
-/* Give rows a little more air, while keeping channel/program rows aligned. */
+/* Keep the fixed channel column and the programme grid on exactly the same row rhythm.
+ * Do NOT add vertical margins to either side: Jellyfin lays these two columns out separately,
+ * so extra margins make the rows drift further apart as you move down the guide.
+ */
 .layout-desktop .tvguide.modernCategoryGuide .channelPrograms,
 .layout-desktop .tvguide.modernCategoryGuide .guide-channelHeaderCell {
-    height: 5.15em;
+    height: 5.15em !important;
+    box-sizing: border-box;
 }
 
 .tvguide.modernCategoryGuide .channelPrograms {
     border: 0;
     background: transparent;
-    margin-top: 0.16em;
-    margin-bottom: 0.16em;
+    margin: 0 !important;
     contain: layout style;
     overflow: visible;
 }
@@ -44,13 +47,22 @@
     border-radius: var(--modern-guide-radius);
     background: var(--modern-guide-surface);
     box-shadow: var(--modern-guide-shadow);
-    margin: 0.16em 0.32em 0.16em 0;
+    margin: 0 0.32em 0 0 !important;
+    box-sizing: border-box;
     contain: layout style;
     overflow: visible;
     transition:
         background-color 150ms ease,
         box-shadow 150ms ease,
         transform 150ms ease;
+}
+
+/* Jellyfin normally overlaps adjacent rows by 1px to make its flat grid borders join.
+ * That is useful for the stock square grid, but not for our independent rounded cards.
+ */
+.tvguide.modernCategoryGuide .channelPrograms + .channelPrograms,
+.tvguide.modernCategoryGuide .guide-channelHeaderCell + .guide-channelHeaderCell {
+    margin-top: 0 !important;
 }
 
 .tvguide.modernCategoryGuide .guide-channelHeaderCell:hover,
@@ -76,7 +88,17 @@
     bottom: 9%;
     width: 66%;
     background-position: right center;
-    filter: drop-shadow(0 0.1em 0.18em rgba(0, 0, 0, 0.22));
+    background-size: contain;
+    opacity: 1 !important;
+
+    /* The channel artwork is often designed for a lighter background.
+     * Give it a small contrast/saturation lift without changing the source image.
+     */
+    filter:
+        saturate(1.28)
+        contrast(1.12)
+        brightness(1.10)
+        drop-shadow(0 0.1em 0.18em rgba(0, 0, 0, 0.28));
 }
 
 .tvguide.modernCategoryGuide .guideChannelName {
