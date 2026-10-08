@@ -18,6 +18,7 @@ import React, { type FC, useCallback, useMemo, useState } from 'react';
 
 import globalize from 'lib/globalize';
 import liveTvCategoryGroupConfig from '../utils/liveTvCategoryGroups.generated';
+import { getLiveTvCategoryLabel } from '../utils/liveTvCategoryLabel';
 
 import './liveTvCategoryBrowser.scss';
 
@@ -112,6 +113,7 @@ const CategoryTile: FC<CategoryTileProps> = ({
     allChannels = false
 }) => {
     const Icon = allChannels ? Apps : getCategoryIcon(category);
+    const label = allChannels ? category.name : getLiveTvCategoryLabel(category.name);
 
     const countText = category.channelCount === null
         ? globalize.translate('AllChannels')
@@ -121,7 +123,7 @@ const CategoryTile: FC<CategoryTileProps> = ({
         <ButtonBase
             type='button'
             className={`liveTvCategoryCard${allChannels ? ' liveTvCategoryCard-all' : ''}`}
-            aria-label={`${category.name}, ${countText}`}
+            aria-label={`${label}, ${countText}`}
             onClick={onSelect}
         >
             <span className='liveTvCategoryCardIcon'>
@@ -129,7 +131,7 @@ const CategoryTile: FC<CategoryTileProps> = ({
             </span>
 
             <span className='liveTvCategoryCardText'>
-                <span className='liveTvCategoryCardTitle'>{category.name}</span>
+                <span className='liveTvCategoryCardTitle'>{label}</span>
                 <span className='liveTvCategoryCardCount'>{countText}</span>
             </span>
 

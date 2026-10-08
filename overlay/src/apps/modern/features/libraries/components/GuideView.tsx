@@ -13,6 +13,7 @@ import globalize from 'lib/globalize';
 import { useLiveTvCategories } from '../hooks/api/useLiveTvCategories';
 import { useLiveTvCategoryGuideChannels } from '../hooks/api/useLiveTvCategoryGuideChannels';
 import type { LiveTvCategorySummary } from '../utils/liveTvCategories';
+import { getLiveTvCategoryLabel } from '../utils/liveTvCategoryLabel';
 
 import 'material-design-icons-iconfont';
 import 'elements/emby-programcell/emby-programcell';
@@ -161,7 +162,7 @@ const GuideView: FC = () => {
         <Box
             ref={tvGuideContainerRef}
             className='absolutePageTabContent'
-            data-guide-category={selectedCategory?.name ?? globalize.translate('AllChannels')}
+            data-guide-category={getLiveTvCategoryLabel(selectedCategory?.name ?? globalize.translate('AllChannels'))}
             sx={{
                 display: 'flex !important',
                 width: 'auto',
