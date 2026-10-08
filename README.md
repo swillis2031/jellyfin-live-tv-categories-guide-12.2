@@ -1,4 +1,18 @@
-# 0.4.2.2 — glass/polish pass
+# 0.4.2.3 — responsive row-alignment fix
+
+This confirms the row drift was not mainly the theme. Jellyfin renders the
+fixed channel/logo column and programme grid as separate vertical stacks.
+
+Previous styling changed the outer channel cells' height/margins. That can
+appear correct at one viewport and drift at another.
+
+0.4.2.3 leaves Jellyfin's native row geometry untouched. The glass/padded
+channel card is now drawn inside the native cell using a pseudo-element, so
+its visual spacing cannot alter row alignment.
+
+The 0.4.2.2 programme gaps, tooltip styling and category glass styling remain.
+
+# 0.4.2.3 — glass/polish pass
 
 This build adds:
 
@@ -8,7 +22,7 @@ This build adds:
 - channel cards inset vertically to visually match programme cards while preserving exact row alignment
 - softer glass-style programme tooltip with larger radius and accent strip
 
-# 0.4.2.2 quick fix
+# 0.4.2.3 quick fix
 
 This build fixes two issues found in the first 0.4.2.0 modern-guide test:
 
@@ -17,7 +31,7 @@ This build fixes two issues found in the first 0.4.2.0 modern-guide test:
 
 The functional category filtering and tooltip code is otherwise unchanged.
 
-# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.2.2)
+# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.2.3)
 
 This is the next build of the category-filtered Guide work.
 
@@ -38,7 +52,7 @@ date handling and EPG loading remain Jellyfin functionality.
 ## Upgrade path
 
 Build this repository with GitHub Actions exactly like the previous 0.4.1.0 builder.
-The generated package is version **0.4.2.2**, so Jellyfin should offer it as an upgrade.
+The generated package is version **0.4.2.3**, so Jellyfin should offer it as an upgrade.
 
 Repository URL after a successful build:
 
@@ -52,7 +66,7 @@ After installing:
 
 ## Rollback
 
-If you dislike the redesign, uninstall 0.4.2.2 and reinstall your working 0.4.1.0
+If you dislike the redesign, uninstall 0.4.2.3 and reinstall your working 0.4.1.0
 build from the previous repository, then restart Jellyfin and hard refresh.
 
 ## Styling location

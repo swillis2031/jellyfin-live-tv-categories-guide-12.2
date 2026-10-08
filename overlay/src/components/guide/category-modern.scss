@@ -24,65 +24,82 @@
     --modern-guide-shadow-hover: 0 0.42em 1.15em rgba(0, 0, 0, 0.34);
 }
 
-/* Keep the fixed channel column and the programme grid on exactly the same row rhythm.
- * Do NOT add vertical margins to either side: Jellyfin lays these two columns out separately,
- * so extra margins make the rows drift further apart as you move down the guide.
+/* Keep the fixed channel column and programme grid on EXACTLY Jellyfin's
+ * native row geometry. Jellyfin renders these as separate vertical stacks.
+ * Changing outer channel-cell height/margins can line up at one viewport and
+ * drift at another, so 0.4.2.3 leaves the actual layout untouched.
  */
-.layout-desktop .tvguide.modernCategoryGuide .channelPrograms,
-.layout-desktop .tvguide.modernCategoryGuide .guide-channelHeaderCell {
-    height: 5.15em !important;
+.tvguide.modernCategoryGuide .channelPrograms,
+.tvguide.modernCategoryGuide .guide-channelHeaderCell {
     box-sizing: border-box;
 }
 
 .tvguide.modernCategoryGuide .channelPrograms {
-    border: 0;
-    background: transparent;
     margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
     contain: layout style;
     overflow: visible;
 }
 
 .tvguide.modernCategoryGuide .guide-channelHeaderCell {
-    /* The outer height + top/bottom margins still totals exactly 5.15em,
-     * so the fixed channel column remains aligned with the programme grid.
-     */
-    height: calc(5.15em - 0.44em) !important;
+    position: relative;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    box-sizing: border-box;
+    contain: layout style;
+    overflow: visible;
+    isolation: isolate;
+}
+
+/* Draw the channel's glass card INSIDE the native cell. This creates the
+ * visual top/bottom spacing without changing row height or row position.
+ */
+.tvguide.modernCategoryGuide .guide-channelHeaderCell::before {
+    content: '';
+    position: absolute;
+    inset: 0.22em 0.32em 0.22em 0;
+    z-index: 0;
+    pointer-events: none;
     border: 1px solid var(--modern-guide-border);
     border-radius: var(--modern-guide-radius);
     background: linear-gradient(
         145deg,
         color-mix(in srgb, var(--modern-guide-surface) 88%, transparent),
-        color-mix(in srgb, var(--jf-palette-primary-main, #00a4dc) 8%, var(--modern-guide-surface))
+        color-mix(
+            in srgb,
+            var(--jf-palette-primary-main, #00a4dc) 8%,
+            var(--modern-guide-surface)
+        )
     );
     box-shadow:
         var(--modern-guide-shadow),
         inset 0 1px 0 rgba(255, 255, 255, 0.055);
-    margin: 0.22em 0.32em 0.22em 0 !important;
-    box-sizing: border-box;
-    contain: layout style;
-    overflow: visible;
     backdrop-filter: blur(10px) saturate(1.08);
+    -webkit-backdrop-filter: blur(10px) saturate(1.08);
     transition:
-        background-color 150ms ease,
         box-shadow 150ms ease,
         border-color 150ms ease,
         transform 150ms ease;
 }
 
-/* Jellyfin normally overlaps adjacent rows by 1px to make its flat grid borders join.
- * That is useful for the stock square grid, but not for our independent rounded cards.
- */
-.tvguide.modernCategoryGuide .channelPrograms + .channelPrograms,
-.tvguide.modernCategoryGuide .guide-channelHeaderCell + .guide-channelHeaderCell {
-    margin-top: 0 !important;
+.tvguide.modernCategoryGuide .guide-channelHeaderCell > * {
+    position: relative;
+    z-index: 1;
 }
 
-.tvguide.modernCategoryGuide .guide-channelHeaderCell:hover,
-.tvguide.modernCategoryGuide .guide-channelHeaderCell:focus-visible {
-    background: var(--modern-guide-surface-hover);
+.tvguide.modernCategoryGuide .guide-channelHeaderCell:hover::before,
+.tvguide.modernCategoryGuide .guide-channelHeaderCell:focus-within::before {
+    border-color: color-mix(
+        in srgb,
+        var(--jf-palette-primary-main, #00a4dc) 42%,
+        var(--modern-guide-border)
+    );
     box-shadow: var(--modern-guide-shadow-hover);
     transform: translateY(-1px);
-    z-index: 5;
 }
 
 /* Keep the number, but make the logo the visual focus like the HA card. */
