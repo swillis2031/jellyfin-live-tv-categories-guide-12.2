@@ -407,3 +407,27 @@ html .tvguide.modernCategoryGuide .guideChannelImage {
     visibility: visible !important;
     opacity: 1 !important;
 }
+/* ============================================================
+ * THEME-SAFE GUIDE SCROLLBARS
+ * Keep scrollbars available inside our custom Guide only.
+ * Do not change their visual theme.
+ * ============================================================ */
+
+html .tvguide.modernCategoryGuide,
+html .tvguide.modernCategoryGuide * {
+    scrollbar-width: auto !important;
+    scrollbar-color: auto !important;
+}
+
+html .tvguide.modernCategoryGuide .guideScroller,
+html .tvguide.modernCategoryGuide .programGrid,
+html .tvguide.modernCategoryGuide .emby-scroller {
+    overflow: auto !important;
+}
+
+/* Chromium / Edge / WebKit */
+html .tvguide.modernCategoryGuide .guideScroller::-webkit-scrollbar,
+html .tvguide.modernCategoryGuide .programGrid::-webkit-scrollbar,
+html .tvguide.modernCategoryGuide .emby-scroller::-webkit-scrollbar {
+    display: block !important;
+}
