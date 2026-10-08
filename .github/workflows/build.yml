@@ -7,10 +7,10 @@ permissions:
   contents: write
 
 env:
-  PLUGIN_VERSION: 0.4.3.2
+  PLUGIN_VERSION: 0.4.3.3
   JELLYFIN_ABI: 12.2.0.0
-  RELEASE_TAG: v0.4.3.2-jf12.2-theme-stable-guide
-  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.4.3.2.zip
+  RELEASE_TAG: v0.4.3.3-jf12.2-category-labels
+  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.4.3.3.zip
 
 jobs:
   build:
@@ -92,6 +92,7 @@ jobs:
           python3 scripts/patch_programmes_accordion.py jellyfin-web
           python3 scripts/patch_guide.py jellyfin-web
           python3 scripts/patch_guide_modern.py jellyfin-web
+          python3 scripts/check_category_labels.py jellyfin-web
 
       - name: Build Jellyfin Web 12.2
         working-directory: jellyfin-web
@@ -116,7 +117,7 @@ jobs:
           import zipfile
 
           stage = Path('artifacts/stage')
-          package = Path('artifacts') / 'Jellyfin.Plugin.LiveTvCategories_0.4.3.2.zip'
+          package = Path('artifacts') / 'Jellyfin.Plugin.LiveTvCategories_0.4.3.3.zip'
           if stage.exists():
               shutil.rmtree(stage)
           (stage / 'web').mkdir(parents=True)
@@ -181,7 +182,7 @@ jobs:
               'category': 'Live TV',
               'versions': [{
                   'version': os.environ['PLUGIN_VERSION'],
-                  'changelog': 'Adds editable top-level category accordions to Programmes and Guide via config/category-groups.json, while retaining the modern filtered EPG and tooltip styling.',
+                  'changelog': 'Removes numeric prefixes from category display labels in Programmes and Guide. Published as a new plugin version so existing installations receive the updated Web client.',
                   'targetAbi': os.environ['JELLYFIN_ABI'],
                   'sourceUrl': source_url,
                   'checksum': checksum,
@@ -199,19 +200,21 @@ jobs:
         with:
           name: Live-TV-Categories-12.2-Filtered-Guide
           path: |
-            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.2.zip
+            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.3.zip
             artifacts/manifest.json
 
       - name: Publish/update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
-          name: Live TV Categories 0.4.3.2 - JF 12.2 Modern Filtered Guide
+          name: Live TV Categories 0.4.3.3 - JF 12.2 Modern Filtered Guide
           body: |
             UNOFFICIAL temporary compatibility/custom build.
 
             Based on JeKaQM Live TV Categories 0.4.0.0.
             Rebuilt against Jellyfin Server 12.2 and Jellyfin Web 12.2.
+
+            Category labels now hide numeric prefixes (for example, 2.1-TNT Sports becomes TNT Sports).
 
             Added:
             - shared top-level accordion category browser on Programmes and Guide
@@ -228,5 +231,5 @@ jobs:
             - improved channel-logo contrast
           make_latest: true
           files: |
-            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.2.zip
+            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.3.zip
             artifacts/manifest.json

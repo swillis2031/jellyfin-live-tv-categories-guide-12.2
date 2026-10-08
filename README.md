@@ -1,3 +1,19 @@
+# 0.4.3.3 — category display labels
+
+Category labels now hide the leading number and dash, including unmapped categories:
+`2.0-Sky/TNT Sports` displays as `Sky/TNT Sports`, and `9-Catch-up` as `Catch-up`.
+Keep the full category names in `config/category-groups.json` for matching.
+
+This release increments the plugin version from `0.4.3.2` to `0.4.3.3` and uses a
+new release tag and ZIP filename. Replacing an existing release's ZIP with the
+same plugin version does not provide a distinct version for installed clients.
+
+After pushing these changes, run the build workflow on the updated branch.
+Install/update to **0.4.3.3** in Jellyfin, restart the server, then reload the Web
+client. Confirm the installed version is 0.4.3.3 before troubleshooting browser
+caching. The build checks label formatting and wiring after assembling the Web
+source, before compiling it.
+
 # 0.4.3.2 — channel-logo restore + theme-stable Guide rows
 
 This build addresses the two issues seen while switching Jellyfin skins/themes:
