@@ -1,4 +1,32 @@
-# 0.4.3.1 — accordion UX + Material/glass polish
+# 0.4.3.2 — channel-logo restore + theme-stable Guide rows
+
+This build addresses the two issues seen while switching Jellyfin skins/themes:
+
+1. Channel logos disappearing.
+2. Fixed channel rows drifting out of alignment with programme rows on
+   ElegantFin, NeutralFin, NetFin and similar themes.
+
+Root causes:
+- an earlier broad `> * { position: relative; }` rule could override Jellyfin's
+  absolutely-positioned `.guideChannelImage`;
+- third-party themes can alter font/spacing/cell geometry differently between
+  the fixed channel column and programme grid.
+
+Fix:
+- restore `.guideChannelImage` to explicit absolute positioning while preserving
+  Jellyfin's own inline `background-image` URL;
+- use one fixed 72px row metric for BOTH `.guide-channelHeaderCell` and
+  `.channelPrograms`;
+- reset only row geometry with tightly-scoped `!important` rules;
+- draw visual channel-card padding inside the row so it never changes layout;
+- use pixel programme insets rather than `em`, avoiding font-size dependent
+  vertical drift.
+
+The overrides are scoped to `.tvguide.modernCategoryGuide`; other Jellyfin pages
+remain theme-controlled.
+
+
+# 0.4.3.2 — accordion UX + Material/glass polish
 
 Changes:
 - optional single-open accordion mode (enabled by default)
@@ -55,7 +83,7 @@ To restore single-open behaviour:
 `"single_open": true`
 
 
-# 0.4.3.1 — editable top-level category accordions
+# 0.4.3.2 — editable top-level category accordions
 
 This build adds the requested two-level category hierarchy to BOTH:
 
@@ -115,7 +143,7 @@ to two different parent groups.
 No React/TypeScript editing is needed just to move categories between groups.
 
 
-# 0.4.3.1 — responsive row-alignment fix
+# 0.4.3.2 — responsive row-alignment fix
 
 This confirms the row drift was not mainly the theme. Jellyfin renders the
 fixed channel/logo column and programme grid as separate vertical stacks.
@@ -123,13 +151,13 @@ fixed channel/logo column and programme grid as separate vertical stacks.
 Previous styling changed the outer channel cells' height/margins. That can
 appear correct at one viewport and drift at another.
 
-0.4.3.1 leaves Jellyfin's native row geometry untouched. The glass/padded
+0.4.3.2 leaves Jellyfin's native row geometry untouched. The glass/padded
 channel card is now drawn inside the native cell using a pseudo-element, so
 its visual spacing cannot alter row alignment.
 
 The 0.4.2.2 programme gaps, tooltip styling and category glass styling remain.
 
-# 0.4.3.1 — glass/polish pass
+# 0.4.3.2 — glass/polish pass
 
 This build adds:
 
@@ -139,7 +167,7 @@ This build adds:
 - channel cards inset vertically to visually match programme cards while preserving exact row alignment
 - softer glass-style programme tooltip with larger radius and accent strip
 
-# 0.4.3.1 quick fix
+# 0.4.3.2 quick fix
 
 This build fixes two issues found in the first 0.4.2.0 modern-guide test:
 
@@ -148,7 +176,7 @@ This build fixes two issues found in the first 0.4.2.0 modern-guide test:
 
 The functional category filtering and tooltip code is otherwise unchanged.
 
-# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.3.1)
+# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.3.2)
 
 This is the next build of the category-filtered Guide work.
 
@@ -169,7 +197,7 @@ date handling and EPG loading remain Jellyfin functionality.
 ## Upgrade path
 
 Build this repository with GitHub Actions exactly like the previous 0.4.1.0 builder.
-The generated package is version **0.4.3.1**, so Jellyfin should offer it as an upgrade.
+The generated package is version **0.4.3.2**, so Jellyfin should offer it as an upgrade.
 
 Repository URL after a successful build:
 
@@ -183,7 +211,7 @@ After installing:
 
 ## Rollback
 
-If you dislike the redesign, uninstall 0.4.3.1 and reinstall your working 0.4.1.0
+If you dislike the redesign, uninstall 0.4.3.2 and reinstall your working 0.4.1.0
 build from the previous repository, then restart Jellyfin and hard refresh.
 
 ## Styling location

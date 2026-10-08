@@ -33,13 +33,13 @@ props = root / "Directory.Build.props"
 text = props.read_text(encoding="utf-8")
 for tag in ("Version", "AssemblyVersion", "FileVersion"):
     old = f"<{tag}>0.4.0.0</{tag}>"
-    new = f"<{tag}>0.4.3.1</{tag}>"
+    new = f"<{tag}>0.4.3.2</{tag}>"
     if text.count(old) != 1:
         raise SystemExit(f"Safety check failed for {props}: expected exactly one {old}")
     text = text.replace(old, new)
 props.write_text(text, encoding="utf-8")
 
-replace_exact(root / "build.yaml", 'version: "0.4.0.0"', 'version: "0.4.3.1"')
+replace_exact(root / "build.yaml", 'version: "0.4.0.0"', 'version: "0.4.3.2"')
 replace_exact(root / "build.yaml", 'targetAbi: "12.1.0.0"', 'targetAbi: "12.2.0.0"')
 
-print("Patched plugin source for Jellyfin 12.2 and version 0.4.3.1")
+print("Patched plugin source for Jellyfin 12.2 and version 0.4.3.2")
