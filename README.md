@@ -1,4 +1,64 @@
-# 0.4.2.3 — responsive row-alignment fix
+# 0.4.3.0 — editable top-level category accordions
+
+This build adds the requested two-level category hierarchy to BOTH:
+
+- Live TV → Programmes
+- Live TV → Guide
+
+The existing Jellyfin/Dispatcharr categories are not changed. They are simply
+grouped visually under collapsible top-level sections.
+
+## The one file you edit later
+
+`config/category-groups.json`
+
+Initial mapping:
+
+- General
+  - 1-General
+  - 1.1-Entertainment & Lifestyle
+  - 4-Nature & Documentary
+- Sports
+  - 2.0-Sky Sports
+  - 2.1-TNT Sports
+  - 2.2-EPL Sports
+  - 2.4-NFL Sports
+  - 2.9-Other Sports
+- Entertainment
+  - 3-Music & Radio
+  - 6-Movies
+- Other
+  - 7-Kids & Family
+  - 8.1-Shopping
+
+If Jellyfin reports a category that is not present in the mapping, it is placed
+under an automatic `Uncategorised` accordion rather than disappearing.
+
+## Behaviour settings
+
+The same JSON file contains:
+
+- `default_open`: top groups opened on first use
+- `remember_open_state`: save expanded/collapsed groups in browser localStorage
+- `show_uncategorised`: show categories you have not mapped yet
+- `show_group_channel_counts`: show total channel count in each top group
+
+The build validates the JSON and refuses to build if a child category is mapped
+to two different parent groups.
+
+## Updating the mapping later
+
+1. Edit only `config/category-groups.json` in VS Code.
+2. Save it.
+3. Source Control → Commit.
+4. Sync/Push.
+5. Run the same GitHub Action.
+6. Update the plugin in Jellyfin.
+
+No React/TypeScript editing is needed just to move categories between groups.
+
+
+# 0.4.3.0 — responsive row-alignment fix
 
 This confirms the row drift was not mainly the theme. Jellyfin renders the
 fixed channel/logo column and programme grid as separate vertical stacks.
@@ -6,13 +66,13 @@ fixed channel/logo column and programme grid as separate vertical stacks.
 Previous styling changed the outer channel cells' height/margins. That can
 appear correct at one viewport and drift at another.
 
-0.4.2.3 leaves Jellyfin's native row geometry untouched. The glass/padded
+0.4.3.0 leaves Jellyfin's native row geometry untouched. The glass/padded
 channel card is now drawn inside the native cell using a pseudo-element, so
 its visual spacing cannot alter row alignment.
 
 The 0.4.2.2 programme gaps, tooltip styling and category glass styling remain.
 
-# 0.4.2.3 — glass/polish pass
+# 0.4.3.0 — glass/polish pass
 
 This build adds:
 
@@ -22,7 +82,7 @@ This build adds:
 - channel cards inset vertically to visually match programme cards while preserving exact row alignment
 - softer glass-style programme tooltip with larger radius and accent strip
 
-# 0.4.2.3 quick fix
+# 0.4.3.0 quick fix
 
 This build fixes two issues found in the first 0.4.2.0 modern-guide test:
 
@@ -31,7 +91,7 @@ This build fixes two issues found in the first 0.4.2.0 modern-guide test:
 
 The functional category filtering and tooltip code is otherwise unchanged.
 
-# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.2.3)
+# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.3.0)
 
 This is the next build of the category-filtered Guide work.
 
@@ -52,7 +112,7 @@ date handling and EPG loading remain Jellyfin functionality.
 ## Upgrade path
 
 Build this repository with GitHub Actions exactly like the previous 0.4.1.0 builder.
-The generated package is version **0.4.2.3**, so Jellyfin should offer it as an upgrade.
+The generated package is version **0.4.3.0**, so Jellyfin should offer it as an upgrade.
 
 Repository URL after a successful build:
 
@@ -66,7 +126,7 @@ After installing:
 
 ## Rollback
 
-If you dislike the redesign, uninstall 0.4.2.3 and reinstall your working 0.4.1.0
+If you dislike the redesign, uninstall 0.4.3.0 and reinstall your working 0.4.1.0
 build from the previous repository, then restart Jellyfin and hard refresh.
 
 ## Styling location

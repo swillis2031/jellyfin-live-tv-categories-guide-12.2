@@ -1,0 +1,48 @@
+{
+  "settings": {
+    "default_open": [
+      "General"
+    ],
+    "remember_open_state": true,
+    "show_uncategorised": true,
+    "show_group_channel_counts": true
+  },
+  "groups": [
+    {
+      "name": "General",
+      "icon": "general",
+      "categories": [
+        "1-General",
+        "1.1-Entertainment & Lifestyle",
+        "4-Nature & Documentary"
+      ]
+    },
+    {
+      "name": "Sports",
+      "icon": "sports",
+      "categories": [
+        "2.0-Sky Sports",
+        "2.1-TNT Sports",
+        "2.2-EPL Sports",
+        "2.4-NFL Sports",
+        "2.9-Other Sports"
+      ]
+    },
+    {
+      "name": "Entertainment",
+      "icon": "entertainment",
+      "categories": [
+        "3-Music & Radio",
+        "6-Movies"
+      ]
+    },
+    {
+      "name": "Other",
+      "icon": "other",
+      "categories": [
+        "7-Kids & Family",
+        "8.1-Shopping"
+      ]
+    }
+  ]
+}
