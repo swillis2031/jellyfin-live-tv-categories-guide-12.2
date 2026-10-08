@@ -8,7 +8,14 @@ import LiveTv from '@mui/icons-material/LiveTv';
 import Movie from '@mui/icons-material/Movie';
 import MoreHoriz from '@mui/icons-material/MoreHoriz';
 import MusicNote from '@mui/icons-material/MusicNote';
+import SportsIcon from '@mui/icons-material/Sports';
 import SportsSoccer from '@mui/icons-material/SportsSoccer';
+import SportsRugbyIcon from '@mui/icons-material/SportsRugby';
+import SportsMotorsportsIcon from '@mui/icons-material/SportsMotorsports';
+import SportsFootballIcon from '@mui/icons-material/SportsFootball';
+import SportsMmaIcon from '@mui/icons-material/SportsMma';
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -69,7 +76,7 @@ const getCategoryIcon = (category: LiveTvBrowserCategory): SvgIconComponent => {
 const getGroupIcon = (icon: string): SvgIconComponent => {
     switch (icon.toLowerCase()) {
         case 'sports':
-            return SportsSoccer;
+            return SportsIcon;
         case 'entertainment':
             return Movie;
         case 'general':

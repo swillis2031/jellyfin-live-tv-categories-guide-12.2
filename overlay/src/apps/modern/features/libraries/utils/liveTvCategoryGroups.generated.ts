@@ -21,7 +21,7 @@ export interface LiveTvCategoryGroupConfig {
 const liveTvCategoryGroupConfig: LiveTvCategoryGroupConfig = {
     "settings": {
         "default_open": [
-            "General"
+            "Sports"
         ],
         "remember_open_state": true,
         "show_uncategorised": true,
