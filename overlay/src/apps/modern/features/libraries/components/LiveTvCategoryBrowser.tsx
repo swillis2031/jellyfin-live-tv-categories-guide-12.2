@@ -206,9 +206,13 @@ const LiveTvCategoryBrowser: FC<LiveTvCategoryBrowserProps> = ({
     const toggleGroup = useCallback((groupName: string) => {
         setOpenGroups(current => {
             const isOpen = current.includes(groupName);
-            const next = isOpen
-                ? current.filter(name => name !== groupName)
-                : [ ...current, groupName ];
+            const next = liveTvCategoryGroupConfig.settings.single_open
+                ? (isOpen ? [] : [ groupName ])
+                : (
+                    isOpen
+                        ? current.filter(name => name !== groupName)
+                        : [ ...current, groupName ]
+                );
 
             if (liveTvCategoryGroupConfig.settings.remember_open_state) {
                 try {

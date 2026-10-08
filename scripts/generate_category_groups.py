@@ -69,7 +69,8 @@ clean = {
         "default_open": [str(value).strip() for value in default_open if str(value).strip()],
         "remember_open_state": bool(settings.get("remember_open_state", True)),
         "show_uncategorised": bool(settings.get("show_uncategorised", True)),
-        "show_group_channel_counts": bool(settings.get("show_group_channel_counts", True))
+        "show_group_channel_counts": bool(settings.get("show_group_channel_counts", True)),
+        "single_open": bool(settings.get("single_open", True))
     },
     "groups": groups
 }
@@ -89,6 +90,7 @@ export interface LiveTvCategoryGroupConfig {
         remember_open_state: boolean;
         show_uncategorised: boolean;
         show_group_channel_counts: boolean;
+        single_open: boolean;
     };
     groups: LiveTvTopCategoryGroup[];
 }

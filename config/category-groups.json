@@ -5,7 +5,8 @@
     ],
     "remember_open_state": true,
     "show_uncategorised": true,
-    "show_group_channel_counts": true
+    "show_group_channel_counts": true,
+    "single_open": true
   },
   "groups": [
     {

@@ -13,6 +13,7 @@ export interface LiveTvCategoryGroupConfig {
         remember_open_state: boolean;
         show_uncategorised: boolean;
         show_group_channel_counts: boolean;
+        single_open: boolean;
     };
     groups: LiveTvTopCategoryGroup[];
 }
@@ -24,7 +25,8 @@ const liveTvCategoryGroupConfig: LiveTvCategoryGroupConfig = {
         ],
         "remember_open_state": true,
         "show_uncategorised": true,
-        "show_group_channel_counts": true
+        "show_group_channel_counts": true,
+        "single_open": true
     },
     "groups": [
         {

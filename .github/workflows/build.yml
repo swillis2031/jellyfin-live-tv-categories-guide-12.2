@@ -7,10 +7,10 @@ permissions:
   contents: write
 
 env:
-  PLUGIN_VERSION: 0.4.3.0
+  PLUGIN_VERSION: 0.4.3.1
   JELLYFIN_ABI: 12.2.0.0
-  RELEASE_TAG: v0.4.3.0-jf12.2-category-accordions
-  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.4.3.0.zip
+  RELEASE_TAG: v0.4.3.1-jf12.2-category-accordion-polish
+  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.4.3.1.zip
 
 jobs:
   build:
@@ -116,7 +116,7 @@ jobs:
           import zipfile
 
           stage = Path('artifacts/stage')
-          package = Path('artifacts') / 'Jellyfin.Plugin.LiveTvCategories_0.4.3.0.zip'
+          package = Path('artifacts') / 'Jellyfin.Plugin.LiveTvCategories_0.4.3.1.zip'
           if stage.exists():
               shutil.rmtree(stage)
           (stage / 'web').mkdir(parents=True)
@@ -199,14 +199,14 @@ jobs:
         with:
           name: Live-TV-Categories-12.2-Filtered-Guide
           path: |
-            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.0.zip
+            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.1.zip
             artifacts/manifest.json
 
       - name: Publish/update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
-          name: Live TV Categories 0.4.3.0 - JF 12.2 Modern Filtered Guide
+          name: Live TV Categories 0.4.3.1 - JF 12.2 Modern Filtered Guide
           body: |
             UNOFFICIAL temporary compatibility/custom build.
 
@@ -228,5 +228,5 @@ jobs:
             - improved channel-logo contrast
           make_latest: true
           files: |
-            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.0.zip
+            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.1.zip
             artifacts/manifest.json

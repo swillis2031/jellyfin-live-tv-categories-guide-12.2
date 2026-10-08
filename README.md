@@ -1,4 +1,61 @@
-# 0.4.3.0 — editable top-level category accordions
+# 0.4.3.1 — accordion UX + Material/glass polish
+
+Changes:
+- optional single-open accordion mode (enabled by default)
+- more compact/fluid Material-like category browser
+- active accordion header has a subtle tonal highlight and accent rail
+- fluid child tile grid via CSS `auto-fit/minmax`
+- smaller, cleaner icons/cards
+- improved hover/focus motion
+- All Channels becomes a full-width quick action
+- all landing-page styling remains shared by Programmes and Guide
+
+## DevTools class → source file
+
+If Chrome DevTools shows generated classes such as `css-hkx3jt`, IGNORE them.
+Those are runtime MUI-generated class names and can change every build.
+
+Use the stable classes beside them:
+
+- `.liveTvCategoryBrowser`
+- `.liveTvCategoryHero`
+- `.liveTvCategoryHeroCount`
+- `.liveTvAllChannelsWrap`
+- `.liveTvCategoryCard`
+- `.liveTvCategoryCard-all`
+- `.liveTvCategoryCardIcon`
+- `.liveTvCategoryCardTitle`
+- `.liveTvCategoryCardCount`
+- `.liveTvCategoryGroup`
+- `.liveTvCategoryGroupHeader`
+- `.liveTvCategoryGroupIcon`
+- `.liveTvCategoryGroupTitle`
+- `.liveTvCategoryGroupMeta`
+- `.liveTvCategoryGroupChevron`
+- `.liveTvCategoryChildren`
+
+They are all styled in:
+
+`overlay/src/apps/modern/features/libraries/components/liveTvCategoryBrowser.scss`
+
+The markup/behaviour for those classes is in:
+
+`overlay/src/apps/modern/features/libraries/components/LiveTvCategoryBrowser.tsx`
+
+The editable category mapping/behaviour settings are in:
+
+`config/category-groups.json`
+
+To permit multiple accordion sections open at once, set:
+
+`"single_open": false`
+
+To restore single-open behaviour:
+
+`"single_open": true`
+
+
+# 0.4.3.1 — editable top-level category accordions
 
 This build adds the requested two-level category hierarchy to BOTH:
 
@@ -58,7 +115,7 @@ to two different parent groups.
 No React/TypeScript editing is needed just to move categories between groups.
 
 
-# 0.4.3.0 — responsive row-alignment fix
+# 0.4.3.1 — responsive row-alignment fix
 
 This confirms the row drift was not mainly the theme. Jellyfin renders the
 fixed channel/logo column and programme grid as separate vertical stacks.
@@ -66,13 +123,13 @@ fixed channel/logo column and programme grid as separate vertical stacks.
 Previous styling changed the outer channel cells' height/margins. That can
 appear correct at one viewport and drift at another.
 
-0.4.3.0 leaves Jellyfin's native row geometry untouched. The glass/padded
+0.4.3.1 leaves Jellyfin's native row geometry untouched. The glass/padded
 channel card is now drawn inside the native cell using a pseudo-element, so
 its visual spacing cannot alter row alignment.
 
 The 0.4.2.2 programme gaps, tooltip styling and category glass styling remain.
 
-# 0.4.3.0 — glass/polish pass
+# 0.4.3.1 — glass/polish pass
 
 This build adds:
 
@@ -82,7 +139,7 @@ This build adds:
 - channel cards inset vertically to visually match programme cards while preserving exact row alignment
 - softer glass-style programme tooltip with larger radius and accent strip
 
-# 0.4.3.0 quick fix
+# 0.4.3.1 quick fix
 
 This build fixes two issues found in the first 0.4.2.0 modern-guide test:
 
@@ -91,7 +148,7 @@ This build fixes two issues found in the first 0.4.2.0 modern-guide test:
 
 The functional category filtering and tooltip code is otherwise unchanged.
 
-# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.3.0)
+# Live TV Categories — Jellyfin 12.2 + Modern Filtered Guide (0.4.3.1)
 
 This is the next build of the category-filtered Guide work.
 
@@ -112,7 +169,7 @@ date handling and EPG loading remain Jellyfin functionality.
 ## Upgrade path
 
 Build this repository with GitHub Actions exactly like the previous 0.4.1.0 builder.
-The generated package is version **0.4.3.0**, so Jellyfin should offer it as an upgrade.
+The generated package is version **0.4.3.1**, so Jellyfin should offer it as an upgrade.
 
 Repository URL after a successful build:
 
@@ -126,7 +183,7 @@ After installing:
 
 ## Rollback
 
-If you dislike the redesign, uninstall 0.4.3.0 and reinstall your working 0.4.1.0
+If you dislike the redesign, uninstall 0.4.3.1 and reinstall your working 0.4.1.0
 build from the previous repository, then restart Jellyfin and hard refresh.
 
 ## Styling location
