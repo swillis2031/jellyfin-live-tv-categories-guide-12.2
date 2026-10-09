@@ -1,49 +1,86 @@
 {
-  "settings": {
-    "default_open": [
-      "Sports"
-    ],
-    "remember_open_state": true,
-    "show_uncategorised": true,
-    "show_group_channel_counts": true,
-    "single_open": true
-  },
-  "groups": [
-    {
-      "name": "General",
-      "icon": "general",
-      "categories": [
-        "1-General",
-        "1.1-Entertainment & Lifestyle",
-        "4-Nature & Documentary"
-      ]
-    },
-    {
-      "name": "Sports",
-      "icon": "sports",
-      "categories": [
-        "2.0-Sky Sports",
-        "2.1-TNT Sports",
-        "2.2-EPL Sports",
-        "2.4-NFL Sports",
-        "2.9-Other Sports"
-      ]
-    },
-    {
-      "name": "Entertainment",
-      "icon": "entertainment",
-      "categories": [
-        "3-Music & Radio",
-        "6-Movies"
-      ]
-    },
-    {
-      "name": "Other",
-      "icon": "other",
-      "categories": [
-        "7-Kids & Family",
-        "8.1-Shopping"
-      ]
-    }
-  ]
+    "settings":  {
+                     "default_open":  [
+                                          "Main Sports"
+                                      ],
+                     "remember_open_state":  true,
+                     "show_uncategorised":  true,
+                     "show_group_channel_counts":  true,
+                     "single_open":  true
+                 },
+    "groups":  [
+                   {
+                       "name":  "Main Sports",
+                       "icon":  "sports",
+                       "categories":  [
+                                          "1.0-Sky/TNT Sports",
+                                          "1.2-Favourites",
+                                          "1.4-PDC/Pool/UFC",
+                                          "1.6-NFL/NBA/NHL",
+                                          "1.8-Box Office"
+                                      ]
+                   },
+                   {
+                       "name":  "English Football",
+                       "icon":  "sports",
+                       "categories":  [
+                                          "2.0-Premier League",
+                                          "2.2-Championship",
+                                          "2.4-League One",
+                                          "2.6-League Two",
+                                          "2.8-National League"
+                                      ]
+                   },
+                   {
+                       "name":  "Other Football",
+                       "icon":  "sports",
+                       "categories":  [
+                                          "3.0-FA Cup",
+                                          "3.2-SPFL/Cup",
+                                          "3.4-UEFA",
+                                          "3.6-International",
+                                          "3.8-Live/PPV"
+                                      ]
+                   },
+                   {
+                       "name":  "Other Sports",
+                       "icon":  "sports",
+                       "categories":  [
+                                          "4.0-Main Channels"
+                                      ]
+                   },
+                   {
+                       "name":  "Core Channels",
+                       "icon":  "general",
+                       "categories":  [
+                                          "7-General",
+                                          "7.2-Lifestyle",
+                                          "7.4-Nature",
+                                          "7.6-Documentary",
+                                          "7.8-Catchup"
+                                      ]
+                   },
+                   {
+                       "name":  "Entertainment",
+                       "icon":  "entertainment",
+                       "categories":  [
+                                          "8-Comedy",
+                                          "8.2-Quiz/Game",
+                                          "8.4-Movies",
+                                          "8.6-Reality TV",
+                                          "8.8-Music/Radio"
+                                      ]
+                   },
+                   {
+                       "name":  "Miscellaneous",
+                       "icon":  "other",
+                       "categories":  [
+                                          "9-Kids/Family",
+                                          "9.2-Shopping",
+                                          "9.4-News/Info",
+                                          "9.6-Regional",
+                                          "9.8-Religion"
+                                      ]
+                   }
+               ]
 }
