@@ -11,7 +11,7 @@
     "groups":  [
                    {
                        "name":  "Main Sports",
-                       "icon":  "sports",
+                       "icon":  "score",
                        "categories":  [
                                           "1.0-Sky/TNT Sports",
                                           "1.2-Favourites",
@@ -22,7 +22,7 @@
                    },
                    {
                        "name":  "English Football",
-                       "icon":  "sports",
+                       "icon":  "soccer",
                        "categories":  [
                                           "2.0-Premier League",
                                           "2.2-Championship",
@@ -33,7 +33,7 @@
                    },
                    {
                        "name":  "Other Football",
-                       "icon":  "sports",
+                       "icon":  "soccer2",
                        "categories":  [
                                           "3.0-FA Cup",
                                           "3.2-SPFL/Cup",
@@ -53,7 +53,7 @@
                        "name":  "Core Channels",
                        "icon":  "general",
                        "categories":  [
-                                          "7-General",
+                                          "7.0-General",
                                           "7.2-Lifestyle",
                                           "7.4-Nature",
                                           "7.6-Documentary",
@@ -64,7 +64,7 @@
                        "name":  "Entertainment",
                        "icon":  "entertainment",
                        "categories":  [
-                                          "8-Comedy",
+                                          "8.0-Comedy",
                                           "8.2-Quiz/Game",
                                           "8.4-Movies",
                                           "8.6-Reality TV",
@@ -75,7 +75,7 @@
                        "name":  "Miscellaneous",
                        "icon":  "other",
                        "categories":  [
-                                          "9-Kids/Family",
+                                          "9.0-Kids/Family",
                                           "9.2-Shopping",
                                           "9.4-News/Info",
                                           "9.6-Regional",
