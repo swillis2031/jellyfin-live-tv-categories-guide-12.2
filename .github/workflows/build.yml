@@ -10,9 +10,9 @@ env:
   UPSTREAM_TAG: v0.6.0.0
   UPSTREAM_COMMIT: 8792acda4e02adfbd8ec7cbffd6d506d1c2200ca
   JELLYFIN_WEB_COMMIT: 61b1f890365ad15138e943e694af723c1d47df2a
-  PLUGIN_VERSION: 0.6.0.2
-  RELEASE_TAG: v0.6.0.2-jf12.2-filtered-guide
-  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.6.0.2.zip
+  PLUGIN_VERSION: 0.6.0.3
+  RELEASE_TAG: v0.6.0.3-jf12.2-filtered-guide
+  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.6.0.3.zip
 
 jobs:
   build:
@@ -183,7 +183,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
-          name: Live TV Categories 0.6.0.2 - Upstream v6 + Filtered Guide
+          name: Live TV Categories 0.6.0.3 - Upstream v6 + Filtered Guide
           body: |
             Custom build based directly on JeKaQM Live TV Categories v0.6.0.0.
 
