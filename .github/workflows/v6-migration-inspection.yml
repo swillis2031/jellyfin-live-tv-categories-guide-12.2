@@ -1,0 +1,126 @@
+name: Inspect v6 migration inputs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this custom builder repository
+        uses: actions/checkout@v4
+        with:
+          path: builder
+
+      - name: Checkout upstream Live TV Categories v0.6.0.0
+        uses: actions/checkout@v4
+        with:
+          repository: JeKaQM/jellyfin-live-tv-category-browser
+          ref: v0.6.0.0
+          path: upstream
+
+      - name: Record exact upstream commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p migration-bundle
+          {
+            echo "upstream_repository=JeKaQM/jellyfin-live-tv-category-browser"
+            echo "upstream_tag=v0.6.0.0"
+            echo "upstream_commit=$(git -C upstream rev-parse HEAD)"
+            echo "builder_commit=$(git -C builder rev-parse HEAD)"
+          } | tee migration-bundle/versions.txt
+
+      - name: Collect upstream v6 files relevant to the migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p migration-bundle/upstream
+
+          copy_if_exists() {
+            src="$1"
+            dst="migration-bundle/upstream/$1"
+            if [ -e "upstream/$src" ]; then
+              mkdir -p "$(dirname "$dst")"
+              cp -a "upstream/$src" "$dst"
+            fi
+          }
+
+          copy_if_exists "Jellyfin.Plugin.LiveTvCategories"
+          copy_if_exists "web"
+          copy_if_exists "scripts"
+          copy_if_exists ".github/workflows"
+          copy_if_exists "Directory.Build.props"
+          copy_if_exists "global.json"
+          copy_if_exists "package.json"
+          copy_if_exists "build.yaml"
+          copy_if_exists "README.md"
+          copy_if_exists "NOTICE.md"
+
+      - name: Collect current custom files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p migration-bundle/builder
+
+          copy_if_exists() {
+            src="$1"
+            dst="migration-bundle/builder/$1"
+            if [ -e "builder/$src" ]; then
+              mkdir -p "$(dirname "$dst")"
+              cp -a "builder/$src" "$dst"
+            fi
+          }
+
+          copy_if_exists ".github/workflows"
+          copy_if_exists "config"
+          copy_if_exists "overlay"
+          copy_if_exists "scripts"
+          copy_if_exists "README.md"
+
+      - name: Create readable inventories
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          {
+            echo "===== UPSTREAM v0.6.0.0 TREE ====="
+            find migration-bundle/upstream -type f | sort
+          } > migration-bundle/upstream-files.txt
+
+          {
+            echo "===== CURRENT CUSTOM BUILDER TREE ====="
+            find migration-bundle/builder -type f | sort
+          } > migration-bundle/builder-files.txt
+
+          {
+            echo "===== UPSTREAM REFERENCES TO LIVETV / WEB PATCHING ====="
+            grep -RniE \
+              'LiveTvCategories|PageTabContent|GuideView|jellyfin-web|patch|overlay|standalone|Programmes|Programs' \
+              migration-bundle/upstream \
+              --exclude='*.dll' --exclude='*.pdb' \
+              2>/dev/null || true
+          } > migration-bundle/upstream-references.txt
+
+      - name: Create migration ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd migration-bundle
+          zip -qr ../v6-migration-inputs.zip .
+          cd ..
+          ls -lh v6-migration-inputs.zip
+
+      - name: Upload migration bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: v6-migration-inputs
+          path: v6-migration-inputs.zip
+          if-no-files-found: error
+          retention-days: 7
