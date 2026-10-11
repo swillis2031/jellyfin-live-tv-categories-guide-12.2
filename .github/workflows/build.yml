@@ -67,11 +67,6 @@ jobs:
           check_hash "src/apps/legacy/controllers/livetv.html" "365c5b4415c55f50eccab101bfd483390ab90eab"
           check_hash "src/apps/modern/features/libraries/components/PageTabContent.tsx" "430e09f6737f18ed1c06210a18cf62d556717922"
 
-      - name: Apply upstream category-browser Web overlay
-        shell: bash
-        run: |
-          set -euo pipefail
-          cp -a source/web/patches/jellyfin-web-12.1/. jellyfin-web/
 
       - name: Generate editable category-group mapping
         shell: bash
