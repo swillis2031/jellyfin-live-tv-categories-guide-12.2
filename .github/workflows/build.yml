@@ -24,8 +24,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: JeKaQM/jellyfin-live-tv-category-browser
-          ref: main
+          ref: v0.6.0.0
           path: source
+
+          
 
       - name: Get Jellyfin Web 12.2
         uses: actions/checkout@v4
