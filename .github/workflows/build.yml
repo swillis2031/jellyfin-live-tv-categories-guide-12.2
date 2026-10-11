@@ -44,9 +44,6 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Patch server plugin for Jellyfin 12.2
-        run: python3 scripts/patch_plugin.py source
-
       - name: Verify 12.2 Web files touched by the upstream 12.1 overlay
         shell: bash
         run: |
