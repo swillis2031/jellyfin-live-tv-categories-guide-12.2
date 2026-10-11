@@ -1,4 +1,4 @@
-name: Build Live TV Categories 12.2 + Modern Filtered Guide
+name: Build Live TV Categories v6 + Modern Filtered Guide
 
 on:
   workflow_dispatch:
@@ -7,31 +7,33 @@ permissions:
   contents: write
 
 env:
-  PLUGIN_VERSION: 0.4.3.4
-  JELLYFIN_ABI: 12.2.0.0
-  RELEASE_TAG: v0.4.3.4-jf12.2-category-labels
-  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.4.3.4.zip
+  UPSTREAM_TAG: v0.6.0.0
+  UPSTREAM_COMMIT: 8792acda4e02adfbd8ec7cbffd6d506d1c2200ca
+  JELLYFIN_WEB_COMMIT: 61b1f890365ad15138e943e694af723c1d47df2a
+  PLUGIN_VERSION: 0.6.0.1
+  RELEASE_TAG: v0.6.0.1-jf12.2-filtered-guide
+  PACKAGE_NAME: Jellyfin.Plugin.LiveTvCategories_0.6.0.1.zip
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout this builder repository
+      - name: Checkout this custom builder repository
         uses: actions/checkout@v4
 
-      - name: Get upstream Live TV Categories source
+      - name: Get upstream Live TV Categories v0.6.0.0
         uses: actions/checkout@v4
         with:
           repository: JeKaQM/jellyfin-live-tv-category-browser
-          ref: v0.6.0.0
+          ref: 8792acda4e02adfbd8ec7cbffd6d506d1c2200ca
           path: source
 
-      - name: Get Jellyfin Web 12.2
+      - name: Get exact Jellyfin Web 12.2 source required by upstream v6
         uses: actions/checkout@v4
         with:
           repository: jellyfin/jellyfin-web
-          ref: v12.2
+          ref: 61b1f890365ad15138e943e694af723c1d47df2a
           path: jellyfin-web
 
       - name: Set up .NET 10
@@ -44,39 +46,77 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Verify 12.2 Web files touched by the upstream 12.1 overlay
+      - name: Verify pinned source commits
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git -C source rev-parse HEAD)" = "$UPSTREAM_COMMIT"
+          test "$(git -C jellyfin-web rev-parse HEAD)" = "$JELLYFIN_WEB_COMMIT"
+          echo "Upstream plugin: $UPSTREAM_COMMIT"
+          echo "Jellyfin Web:     $JELLYFIN_WEB_COMMIT"
 
-          check_hash() {
-            file="$1"
-            expected="$2"
-            actual="$(git -C jellyfin-web hash-object "$file")"
-            echo "$file"
-            echo "  expected: $expected"
-            echo "  actual:   $actual"
-            if [ "$actual" != "$expected" ]; then
-              echo "::error::Jellyfin Web 12.2 changed a file that the upstream 12.1 overlay replaces."
-              echo "::error::Stopping safely. Send this failed step back to ChatGPT so the overlay can be ported properly."
-              exit 1
-            fi
-          }
+      - name: Set custom plugin version
+        run: python3 scripts/set_custom_version.py source "$PLUGIN_VERSION"
 
-          check_hash "src/apps/legacy/controllers/livetv/livetvsuggested.js" "49699fd4f2588f0be26f5f421e3ee44bddaf6f09"
-          check_hash "src/apps/legacy/controllers/livetv.html" "365c5b4415c55f50eccab101bfd483390ab90eab"
-          check_hash "src/apps/modern/features/libraries/components/PageTabContent.tsx" "430e09f6737f18ed1c06210a18cf62d556717922"
+      - name: Apply upstream v6 Jellyfin Web integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          JELLYFIN_WEB_SOURCE="$GITHUB_WORKSPACE/jellyfin-web" \
+            bash source/scripts/prepare-jellyfin-web.sh
 
-
-
-      - name: Generate editable category-group mapping
+      - name: Generate custom category-group mapping
         shell: bash
         run: |
           set -euo pipefail
           python3 scripts/generate_category_groups.py \
             config/category-groups.json \
-            overlay/src/apps/modern/features/libraries/utils/liveTvCategoryGroups.generated.ts
+            jellyfin-web/src/apps/modern/features/libraries/utils/liveTvCategoryGroups.generated.ts
 
+      - name: Add custom grouped browser and filtered Guide files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          install -m 0644 \
+            overlay/src/apps/modern/features/libraries/components/LiveTvCategoryBrowser.tsx \
+            jellyfin-web/src/apps/modern/features/libraries/components/LiveTvCategoryBrowser.tsx
+
+          install -m 0644 \
+            overlay/src/apps/modern/features/libraries/components/liveTvCategoryBrowser.scss \
+            jellyfin-web/src/apps/modern/features/libraries/components/liveTvCategoryBrowser.scss
+
+          install -m 0644 \
+            overlay/src/apps/modern/features/libraries/components/GuideView.tsx \
+            jellyfin-web/src/apps/modern/features/libraries/components/GuideView.tsx
+
+          install -m 0644 \
+            overlay/src/apps/modern/features/libraries/hooks/api/useLiveTvCategoryGuideChannels.ts \
+            jellyfin-web/src/apps/modern/features/libraries/hooks/api/useLiveTvCategoryGuideChannels.ts
+
+          install -m 0644 \
+            overlay/src/apps/modern/features/libraries/utils/liveTvCategoryLabel.ts \
+            jellyfin-web/src/apps/modern/features/libraries/utils/liveTvCategoryLabel.ts
+
+          install -m 0644 \
+            overlay/src/components/guide/category-modern.scss \
+            jellyfin-web/src/components/guide/category-modern.scss
+
+      - name: Apply custom Programmes hierarchy to upstream v6
+        run: python3 scripts/patch_programmes_v6.py jellyfin-web
+
+      - name: Apply category-filtered native Guide support
+        run: python3 scripts/patch_guide.py jellyfin-web
+
+      - name: Apply modern Guide styling and tooltip behaviour
+        run: python3 scripts/patch_guide_modern.py jellyfin-web
+
+      - name: Verify custom v6 Web assembly
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/check_category_labels.py jellyfin-web
+          python3 scripts/verify_v6_customizations.py jellyfin-web
 
       - name: Build Jellyfin Web 12.2
         working-directory: jellyfin-web
@@ -84,137 +124,90 @@ jobs:
           npm ci
           npm run build:production
 
-      - name: Build server plugin against Jellyfin 12.2
-        run: |
-          dotnet publish \
-            source/Jellyfin.Plugin.LiveTvCategories/Jellyfin.Plugin.LiveTvCategories.csproj \
-            --configuration Release \
-            --no-self-contained \
-            --output artifacts/plugin
-
-      - name: Package plugin ZIP
+      - name: Build and test upstream v6 server plugin
         shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import shutil
-          import zipfile
+          set -euo pipefail
+          PLUGIN_OUTPUT_DIR="$GITHUB_WORKSPACE/artifacts/plugin" \
+            bash source/scripts/build-plugin.sh
 
-          stage = Path('artifacts/stage')
-          package = Path('artifacts') / 'Jellyfin.Plugin.LiveTvCategories_0.4.3.4.zip'
-          if stage.exists():
-              shutil.rmtree(stage)
-          (stage / 'web').mkdir(parents=True)
-
-          shutil.copy2(
-              'artifacts/plugin/Jellyfin.Plugin.LiveTvCategories.dll',
-              stage / 'Jellyfin.Plugin.LiveTvCategories.dll'
-          )
-          shutil.copy2('source/LICENSE', stage / 'LICENSE')
-          shutil.copy2('source/NOTICE.md', stage / 'NOTICE.md')
-
-          web_dist = Path('jellyfin-web/dist')
-          if not (web_dist / 'index.html').exists():
-              raise SystemExit('Jellyfin Web build is missing dist/index.html')
-          shutil.copytree(web_dist, stage / 'web', dirs_exist_ok=True)
-
-          (stage / 'SOURCE.txt').write_text(
-              'UNOFFICIAL TEMPORARY JELLYFIN 12.2 + FILTERED GUIDE BUILD\n'
-              '==========================================================\n\n'
-              'Plugin source: https://github.com/JeKaQM/jellyfin-live-tv-category-browser\n'
-              'Jellyfin Web source: https://github.com/jellyfin/jellyfin-web/tree/v12.2\n\n'
-              'Changes:\n'
-              '- server plugin rebuilt against Jellyfin 12.2\n'
-              '- bundled-Web exact-version guard changed to 12.2\n'
-              '- upstream category-first Programmes view retained\n'
-              '- shared top-level accordion category browser added to Programmes and Guide\n- editable category hierarchy loaded from config/category-groups.json\n- category-first Guide picker added\n'
-              '- selected category channels feed Jellyfin native Guide\n- modern rounded EPG styling, clearer logos and hover/focus motion\n- programme title/description/time tooltip on hover or keyboard focus\n',
-              encoding='utf-8'
-          )
-
-          with zipfile.ZipFile(package, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-              for path in sorted(stage.rglob('*')):
-                  if path.is_file():
-                      archive.write(path, path.relative_to(stage).as_posix())
-
-          print(package)
-          PY
-
-      - name: Create Jellyfin repository manifest
+      - name: Package using upstream v6 catalog builder
         shell: bash
         run: |
+          set -euo pipefail
+          PLUGIN_RELEASE_BASE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${RELEASE_TAG}" \
+          PLUGIN_SOURCE_URL="https://github.com/${GITHUB_REPOSITORY}" \
+          PLUGIN_DLL_PATH="$GITHUB_WORKSPACE/artifacts/plugin/Jellyfin.Plugin.LiveTvCategories.dll" \
+          JELLYFIN_WEB_DIST="$GITHUB_WORKSPACE/jellyfin-web/dist" \
+          CATEGORY_BROWSER_DIST="$GITHUB_WORKSPACE/artifacts/plugin/category-browser" \
+          CATALOG_OUTPUT_DIR="$GITHUB_WORKSPACE/artifacts/catalog" \
+            bash source/scripts/build-catalog.sh
+
+      - name: Apply custom manifest description
+        shell: bash
+        run: |
+          set -euo pipefail
           python3 - <<'PY'
-          import hashlib
           import json
-          import os
-          from datetime import datetime, timezone
           from pathlib import Path
 
-          repo = os.environ['GITHUB_REPOSITORY']
-          tag = os.environ['RELEASE_TAG']
-          package_name = os.environ['PACKAGE_NAME']
-          package = Path('artifacts') / package_name
-          checksum = hashlib.md5(package.read_bytes()).hexdigest().upper()
-          source_url = f'https://github.com/{repo}/releases/download/{tag}/{package_name}'
-
-          manifest = [{
-              'guid': 'a4b2fdc8-cb2a-463b-812a-16e9ea88e12a',
-              'name': 'Live TV Categories',
-              'overview': 'Grouped accordion Live TV browsing plus a modern category-filtered EPG Guide',
-              'description': 'Unofficial Jellyfin 12.2 build with editable top-level category accordions shared by Programmes and Guide, plus the modern filtered EPG.',
-              'owner': 'jeno / temporary filtered-guide build',
-              'category': 'Live TV',
-              'versions': [{
-                  'version': os.environ['PLUGIN_VERSION'],
-                  'changelog': 'Removes numeric prefixes from category display labels in Programmes and Guide. Published as a new plugin version so existing installations receive the updated Web client.',
-                  'targetAbi': os.environ['JELLYFIN_ABI'],
-                  'sourceUrl': source_url,
-                  'checksum': checksum,
-                  'timestamp': datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-              }]
-          }]
-
-          Path('artifacts/manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
-          print('MD5:', checksum)
-          print('sourceUrl:', source_url)
+          path = Path('artifacts/catalog/manifest.json')
+          manifest = json.loads(path.read_text(encoding='utf-8'))
+          plugin = manifest[0]
+          plugin['overview'] = 'Grouped Live TV browsing plus a category-filtered Jellyfin Guide'
+          plugin['description'] = (
+              'Based on upstream Live TV Categories v0.6.0.0, retaining its backend, '
+              'compatibility adapter, standalone browser and Jellyfin 12.2 integration. '
+              'Adds editable parent category accordions, cleaned display labels and a '
+              'category-filtered native EPG Guide.'
+          )
+          plugin['owner'] = 'jeno / swillis2031 custom filtered-guide build'
+          plugin['versions'][0]['changelog'] = (
+              'Rebased custom build on upstream v0.6.0.0. Preserves upstream v6 core mechanics '
+              'and adds editable parent category groups, hidden numeric display prefixes, '
+              'grouped Programmes browsing and the category-filtered modern Guide.'
+          )
+          path.write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
           PY
 
       - name: Upload Actions build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Live-TV-Categories-12.2-Filtered-Guide
+          name: Live-TV-Categories-v6-Filtered-Guide
           path: |
-            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.4.zip
-            artifacts/manifest.json
+            artifacts/catalog/${{ env.PACKAGE_NAME }}
+            artifacts/catalog/manifest.json
+            upstream.lock.json
 
       - name: Publish/update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
-          name: Live TV Categories 0.4.3.4 - JF 12.2 Modern Filtered Guide
+          name: Live TV Categories 0.6.0.1 - Upstream v6 + Filtered Guide
           body: |
-            UNOFFICIAL temporary compatibility/custom build.
+            Custom build based directly on JeKaQM Live TV Categories v0.6.0.0.
 
-            Based on JeKaQM Live TV Categories 0.4.0.0.
-            Rebuilt against Jellyfin Server 12.2 and Jellyfin Web 12.2.
+            Upstream v6 retained:
+            - v6 backend/category discovery and compatibility adapter
+            - Jellyfin 12.0/12.1/12.2 server compatibility model
+            - official v6 Jellyfin Web 12.2 integration
+            - independent /LiveTvCategories/ui/ browser
+            - upstream permission, source-failure and category API handling
 
-            Category labels now hide numeric prefixes (for example, 2.1-TNT Sports becomes TNT Sports).
-
-            Added:
-            - shared top-level accordion category browser on Programmes and Guide
+            Custom additions retained:
             - editable hierarchy in config/category-groups.json
-            - unmapped categories automatically appear under Uncategorised
-            - category-first landing screen on Live TV -> Guide
-            - filtered native EPG grid for the selected M3U group-title
-            - back-to-categories button in the native Guide header
-            - rounded modern programme cards and channel rows
-            - larger/clearer channel logos
-            - subtle hover/focus lift animation
-            - programme description + time tooltip on hover/focus
-            - fixed channel/programme row alignment
-            - improved channel-logo contrast
-            - granular categories and subcategories for sports, news, kids, music, movies, and more
+            - top-level category accordions in Programmes and Guide
+            - unmapped categories under Uncategorised
+            - numeric prefixes retained for matching but hidden from display labels
+            - category-filtered native Jellyfin EPG Guide
+            - back-to-categories Guide control
+            - modern rounded EPG styling and clearer logos
+            - programme title/description/time tooltip on hover or keyboard focus
+
+            Upstream base: v0.6.0.0 (8792acda4e02adfbd8ec7cbffd6d506d1c2200ca)
+            Jellyfin Web base: v12.2 exact commit 61b1f890365ad15138e943e694af723c1d47df2a
           make_latest: true
           files: |
-            artifacts/Jellyfin.Plugin.LiveTvCategories_0.4.3.4.zip
-            artifacts/manifest.json
+            artifacts/catalog/${{ env.PACKAGE_NAME }}
+            artifacts/catalog/manifest.json
+            upstream.lock.json
