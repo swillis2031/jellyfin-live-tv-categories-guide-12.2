@@ -117,7 +117,7 @@ const GuideView: FC = () => {
                 }}
                 onSelectAllChannels={() => selectCategory(ALL_CHANNELS_ID)}
                 onSelectCategory={selectCategory}
-                storageKey='live-tv-guide-top-category-groups-v1'
+                storageKey='live-tv-guide-top-category-groups-v2'
                 loadError={categoriesQuery.isError}
             />
         );
