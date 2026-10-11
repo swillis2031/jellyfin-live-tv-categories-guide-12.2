@@ -1,0 +1,8 @@
+{
+  "repository": "JeKaQM/jellyfin-live-tv-category-browser",
+  "tag": "v0.6.0.0",
+  "commit": "8792acda4e02adfbd8ec7cbffd6d506d1c2200ca",
+  "jellyfinWebTag": "v12.2",
+  "jellyfinWebCommit": "61b1f890365ad15138e943e694af723c1d47df2a",
+  "customVersion": "0.6.0.1"
+}
