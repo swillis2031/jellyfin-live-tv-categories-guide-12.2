@@ -10,6 +10,8 @@ import MoreHoriz from '@mui/icons-material/MoreHoriz';
 import MusicNote from '@mui/icons-material/MusicNote';
 import SportsIcon from '@mui/icons-material/Sports';
 import SportsSoccer from '@mui/icons-material/SportsSoccer';
+import ScoreboardIcon from '@mui/icons-material/Scoreboard';
+import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import SportsRugbyIcon from '@mui/icons-material/SportsRugby';
 import SportsMotorsportsIcon from '@mui/icons-material/SportsMotorsports';
 import SportsFootballIcon from '@mui/icons-material/SportsFootball';
@@ -75,8 +77,15 @@ const getCategoryIcon = (category: LiveTvBrowserCategory): SvgIconComponent => {
 
 const getGroupIcon = (icon: string): SvgIconComponent => {
     switch (icon.toLowerCase()) {
+        case 'score':
+            return SportsScoreIcon;
+        case 'soccer':
+            return SportsSoccer;
+        case 'soccer2':
+            return ScoreboardIcon;
         case 'sports':
             return SportsIcon;
+            
         case 'entertainment':
             return Movie;
         case 'general':
