@@ -2,6 +2,11 @@ name: Inspect v6 migration inputs
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - v6-rebase
+    paths:
+      - '.github/workflows/v6-migration-inspection.yml'
 
 permissions:
   contents: read
