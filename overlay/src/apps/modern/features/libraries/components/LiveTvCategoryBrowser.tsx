@@ -60,10 +60,24 @@ const normalise = (value: string) => value.trim().toLocaleLowerCase();
 const getCategoryIcon = (category: LiveTvBrowserCategory): SvgIconComponent => {
     const name = category.name.toUpperCase();
 
-    if (/SPORT|F1|MOTOGP|FIFA|NFL|NHL|NBA|MLB|MLS|CRICKET|OLYMPIC/.test(name)) {
+    if (/F1|MOTOGP/.test(name)) {
+        return SportsMotorsportsIcon;
+    }
+    if (/FIFA/.test(name)) {
         return SportsSoccer;
     }
-
+    if (/NFL/.test(name)) {
+        return SportsFootballIcon;
+    }
+    if (/MMA|UFC|Boxing/.test(name)) {
+        return SportsMmaIcon;
+    }
+    if (/NFL/.test(name)) {
+        return SportsFootballIcon;
+    }
+    if (/NFL/.test(name)) {
+        return SportsFootballIcon;
+    }
     if (/KIDS|CHILD|FAMILY|FAMIL|ENFANT|COCUK|FEMIJET/.test(name)) {
         return ChildCare;
     }
